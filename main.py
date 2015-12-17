@@ -30,10 +30,10 @@ class Country:
 class GameBoard:
     def __init__(self, countries, continents):
         self.neighbor_info = countries
+        self.continents = continents
         self._run_map_tests()
 
         self.countries = {}
-
         for country in self.neighbor_info:
             self.contries[country] = Country(country, contitents[country])
             #self.troops[country] = 0
@@ -53,6 +53,15 @@ class GameBoard:
         self._check_neighbors_exist(self.neighbor_info)
         self._check_duplex(self.neighbor_info)
         self._check_pathways(self.neighbor_info)
+        self._check_continents()
+
+    def _check_continents(self):
+        #TODO: implement continent checks, maybe move it to same structure as countries
+        #make sure all countries in continent touch at least 1 other country in continent
+        #make sure every country is part of continent
+        #make sure they're not part of 2 different continents
+        #make sure there isn't continents without countries
+        pass
 
     def _check_neighbors_exist(self, countries):
         for country in countries:
@@ -132,11 +141,6 @@ def main():
         'Italy'     : ['France']
     }
 
-    #TODO: implement continent checks, maybe move it to same structure as countries
-    #make sure all countries in continent touch at least 1 other country in continent
-    #make sure every country is part of continent
-    #make sure they're not part of 2 different continents
-    #make sure there isn't continents without countries
     continents = {
         'Europe' : ['Ukraine', 'Britain', 'Sweden', 'France', 'Italy'],
         'Asia'   : ['Russia', 'China'],
