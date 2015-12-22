@@ -26,7 +26,6 @@ class Country:
     def change_team(self, team): #TODO check
         self.team = team
 
-
 class GameBoard:
     def __init__(self, countries, continents):
         self.neighbor_info = countries
@@ -115,9 +114,14 @@ class Player:
         pass
     def chooseCountry(self, allCountries, freeCountries):
         pass
+    #returns list of where it added people e.g. {'China': 1, 'US': 2}
     def reinforce(self, ownCountries):
-        self.chooseCountry = chooseCountryCallback
-        #returns list of where it added people e.g. {'China': 1, 'US': 2}
+	pass
+        #self.chooseCountry = chooseCountryCallback
+    #kk
+    def move(self, start, finish):
+	pass
+
 #choice or automatic selection
 class Game:
     def __init__(self, nPlayers, nCpus, chooseAuto=False):
