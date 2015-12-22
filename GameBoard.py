@@ -26,6 +26,7 @@ class GameBoard:
 
    def touching(self, c1, c2):
       self.check_exists(c1, c2)
+      #TODO: wtf i thought this was implemented
 
    def check_exists(self, *countries):
       for country in countries:
