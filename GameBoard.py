@@ -4,13 +4,15 @@
 class Country:
    def __init__(self, name, continent):
       self.name = name
-      self.team = -1 #-1 = none, then 0-infinity
       self.continent = continent
+      self.team = -1 #-1 = none, then 0-infinity
       self.num_troops = 0
 
    def add_troops(self, n): #TODO: check
       self.num_troops += n
-   def change_team(self, team): #TODO check
+   def change_team(self, team, num_troops): #TODO check
+      self.num_troops = num_troops
+      #reset number of troops?
       self.team = team
 
 class GameBoard:
@@ -21,8 +23,14 @@ class GameBoard:
 
       self.countries = {}
       for country in self.neighbor_info:
-         self.contries[country] = Country(country, contitents[country])
+         continent = self.get_country_continent(country)
+         self.countries[country] = Country(country, continent)
          #self.troops[country] = 0
+
+   def get_country_continent(self, name):
+      for continent in self.continents:
+         if name in self.continents[continent]:
+            return continent
 
    def touching(self, c1, c2):
       self.check_exists(c1, c2)
@@ -64,11 +72,11 @@ class GameBoard:
             if country == neighbor:
                raise Exception("Country '%s' cannot be it's own neighbor" % country)
 
-    def _check_pathways(self, countries):
-        for start in countries:
-            for end in countries:
-                if not self._connects(start, end, []):
-                    raise Exception('Countries not connected: %s %s' % (start, end))
+   def _check_pathways(self, countries):
+      for start in countries:
+         for end in countries:
+            if not self._connects(start, end, []):
+               raise Exception('Countries not connected: %s %s' % (start, end))
 
    def _connects(self, start, end, checked=[]):
       if start == end:

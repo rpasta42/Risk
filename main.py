@@ -1,4 +1,7 @@
+#!/usr/bin/env python
+
 from pycloak import shellutils
+from pycloak.collections import sub_lst
 import importlib
 from GameBoard import GameBoard #, Country
 
@@ -6,7 +9,8 @@ from GameBoard import GameBoard #, Country
 #but GameBoard and Player are both part of Game
 #Should we use inheritance or pass callbacks, etc?
 class Player:
-   def __init__(self):
+   def __init__(self, i):
+      self.num = i
       self.gameBoard = None
       self.countries = [] #owned countries
 
@@ -18,8 +22,9 @@ class Player:
    def chooseCountry(self, freeCountries):
       n = shellutils.get_random() % (len(freeCountries) - 1)
       chosen = freeCountries[n]
+      chosen.change_team(self.num, 1)
       self.countries.append(chosen)
-     return chosen
+      return n, chosen
 
    #returns list of where it added people e.g. {'China': 1, 'US': 2}
    def reinforce(self, numTroops):
@@ -40,16 +45,25 @@ class Player:
 
 #choice or automatic selection
 class Game:
-   def __init__(self, players, gameBoard, chooseAuto=False):
+   def __init__(self, players, gameBoard): #, chooseAuto=False):
       self.gameBoard = gameBoard
       self.players = players
+ 
+      countriesDict = gameBoard.countries 
+      self.freeCountries = freeCountries = []
+      for country in countriesDict:
+         freeCountries.append(countriesDict[country])
 
       for player in players:
          player.setGameBoard(gameBoard)
       #self.chooseAuto = chooseAuto
 
    def begin(self):
-      pass
+      c = self.freeCountries
+      while len(c) != 0:
+         for player in self.players:
+            n = country = player.chooseCountry(c)
+            self.freeCountries = sub_lst(c, c[n]) 
 
 def main():
    countries = {
@@ -71,7 +85,7 @@ def main():
    }
 
    gameBoard = GameBoard(countries, continents)
-   players = [Player(), Player()]
+   players = [Player(0), Player(1)]
 
    game = Game(players, gameBoard)
 
