@@ -32,8 +32,12 @@ class GameBoard:
          if name in self.continents[continent]:
             return continent
 
+   #kk how does this work without being implemented?
    def touching(self, c1, c2):
-      self.check_exists(c1, c2)
+      self.check_exists(c1, c2) 
+      if c2 in self.neighbor_info[c1]:
+         return True
+      return False
       #TODO: wtf i thought this was implemented
 
    def check_exists(self, *countries):
@@ -58,6 +62,7 @@ class GameBoard:
       #make sure there isn't continents without countries
       pass
 
+   #neighbor does not have entry in countries
    def _check_neighbors_exist(self, countries):
       for country in countries:
          neighbors = countries.get(country, None)
@@ -65,6 +70,7 @@ class GameBoard:
             raise Exception('Country cannot have empty neighbors')
          self.check_exists(*neighbors)
 
+   #own neighbor
    def _check_self_neighbor(self, countries):
       for country in countries:
          neighbors = countries[country]
@@ -72,6 +78,7 @@ class GameBoard:
             if country == neighbor:
                raise Exception("Country '%s' cannot be it's own neighbor" % country)
 
+   #check that route exists
    def _check_pathways(self, countries):
       for start in countries:
          for end in countries:
@@ -81,19 +88,20 @@ class GameBoard:
    def _connects(self, start, end, checked=[]):
       if start == end:
          return True
-      if self.touching(start, end):
-         return True
+      #if self.touching(start, end):
+      #   return True
       else:
          end_neighbors = self.neighbor_info[end]
          for neighbor in end_neighbors:
-            if self.touching(start, neighbor):
-               return True
+            #if self.touching(start, neighbor):
+            #   return True
             if not (neighbor in checked):
                checked.append(neighbor)
                if self._connects(start, neighbor, checked):
                   return True
       return False
 
+   #country has other country, but other country doesn't have first country
    def _check_duplex(self, countries):
       for name in countries:
          neighbors = countries[name]

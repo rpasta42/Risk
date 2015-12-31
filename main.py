@@ -65,6 +65,8 @@ class Game:
             n = country = player.chooseCountry(c)
             self.freeCountries = sub_lst(c, c[n]) 
 
+      reinforce_each
+
 def main():
    countries = {
       'Ukraine'   : ['Russia', 'France'],
@@ -75,7 +77,9 @@ def main():
       'Britain'   : ['France', 'Sweden'],
       'Sweden'    : ['Russia', 'Britain'],
       'France'    : ['Ukraine', 'Britain', 'Italy'],
-      'Italy'     : ['France']
+      'Italy'     : ['France'] #,
+      #'Georgia'   : ['Niger'],
+      #'Niger'     : ['Georgia']
    }
 
    continents = {
