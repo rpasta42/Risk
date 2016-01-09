@@ -1,63 +1,47 @@
-
 #TODO: removeme from pycloak.collections import sub_lst
 
-class Country:
-   def __init__(self, name, continent):
-      self.name = name
-      self.continent = continent
-      self.team = -1 #-1 = none, then 0-infinity
-      self.num_troops = 0
 
-   def add_troops(self, n): #TODO: check
-      self.num_troops += n
-   def change_team(self, team, num_troops): #TODO check
-      self.num_troops = num_troops
-      #reset number of troops?
-      self.team = team
+class BoardChecker:
+   def __init__(self, gameBoard):
+      #TODO: check that all things exist
+      self._neighbor_info = gameBoard['countries']
+      self.continents = gameBoard['continents']
 
-class GameBoard:
-   def __init__(self, countries, continents):
-      self.neighbor_info = countries
-      self.continents = continents
+      assert(gameBoard['start-army'] >= len(self._neighbor_info))
+
       self._run_map_tests()
-
-      self.countries = {}
-      for country in self.neighbor_info:
-         continent = self.get_country_continent(country)
-         self.countries[country] = Country(country, continent)
-         #self.troops[country] = 0
 
    def get_country_continent(self, name):
       for continent in self.continents:
-         if name in self.continents[continent]:
+         if name in continent['members']:
             return continent
 
    #kk how does this work without being implemented?
    def touching(self, c1, c2):
-      self.check_exists(c1, c2) 
-      if c2 in self.neighbor_info[c1]:
+      self.check_exists(c1, c2)
+      if c2 in self._neighbor_info[c1]:
          return True
       return False
       #TODO: wtf i thought this was implemented
 
-   def check_exists(self, *countries):
-      for country in countries:
-         if self.neighbor_info.get(country, None) is None:
+   def check_exists(self, *names):
+      for country in names:
+         if self._neighbor_info.get(country, None) is None:
             raise Exception("Country doesn't exist: %s" % country)
             return False
       return True
 
    def _run_map_tests(self):
-      self._check_self_neighbor(self.neighbor_info)
-      self._check_neighbors_exist(self.neighbor_info)
-      self._check_duplex(self.neighbor_info)
-      self._check_pathways(self.neighbor_info)
+      self._check_self_neighbor(self._neighbor_info)
+      self._check_neighbors_exist(self._neighbor_info)
+      self._check_duplex(self._neighbor_info)
+      self._check_pathways(self._neighbor_info)
       self._check_continents()
 
    def _check_continents(self):
       #TODO: implement continent checks, maybe move it to same structure as countries
       #make sure all countries in continent touch at least 1 other country in continent
-      #make sure every country is part of continent
+      #make sure every country is part of only 1 continent
       #make sure they're not part of 2 different continents
       #make sure there isn't continents without countries
       pass
@@ -91,7 +75,7 @@ class GameBoard:
       #if self.touching(start, end):
       #   return True
       else:
-         end_neighbors = self.neighbor_info[end]
+         end_neighbors = self._neighbor_info[end]
          for neighbor in end_neighbors:
             #if self.touching(start, neighbor):
             #   return True
