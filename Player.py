@@ -1,4 +1,10 @@
 
+def gcd(a, b):
+    if a % b == 0:
+        return b
+    else
+        return gcd(a, a % b)
+
 #don't be confused by infinities
 def get_nth_dict(d, n):
    i = 0
