@@ -15,3 +15,5 @@ Where do we enforce rules?
    potentially good strategy:
       keep track of stuff in Game()
       but we would need to store all the info and complicate logic
+
+License: BSD
